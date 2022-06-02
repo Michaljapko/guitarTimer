@@ -1,15 +1,18 @@
 import { useSelector } from 'react-redux';
-import { selectAllHours, selectAllTakes } from '../../features/skills/skillsSlice';
+import { selectAllTime, selectAllTakes, selectIsPracticeToday } from '../../features/skills/skillsSlice';
 import { AiOutlineLike, AiOutlineDislike } from 'react-icons/ai';
 import { StyledHeadInfo, StyledSmallText, StyledCard } from './HeadInfo.styled';
 
 const HeadInfo = () => {
-	const allHours = useSelector(selectAllHours);
+	const allTime = useSelector(selectAllTime);
 	const allTakes = useSelector(selectAllTakes);
+	const isPracticeToday = useSelector(selectIsPracticeToday);
 	return (
 		<StyledHeadInfo>
 			<StyledCard>
-				<p>{allHours}h</p>
+				<p>
+					{allTime.horus}:{allTime.minutes}h
+				</p>
 				<StyledSmallText>Łącznie spędziłeś godzin</StyledSmallText>
 			</StyledCard>
 			<StyledCard>
@@ -17,8 +20,7 @@ const HeadInfo = () => {
 				<StyledSmallText>Wszystkich sesji</StyledSmallText>
 			</StyledCard>
 			<StyledCard>
-				<AiOutlineLike />
-				<AiOutlineDislike />
+				{isPracticeToday ? <AiOutlineLike /> : <AiOutlineDislike />}
 				<StyledSmallText>Ćwiczyłeś dziś?</StyledSmallText>
 			</StyledCard>
 		</StyledHeadInfo>

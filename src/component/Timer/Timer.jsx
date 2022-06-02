@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateTime } from '../../features/skills/skillsSlice';
+import { exceriesDone } from '../../features/skills/skillsSlice';
 
-const Timer = () => {
+const Timer = ({ index }) => {
 	const [seconds, setSeconds] = useState(0);
 	const [minutes, setMinutes] = useState(0);
 	const [hours, setHours] = useState(0);
@@ -23,13 +23,14 @@ const Timer = () => {
 	}, [seconds, minutes]);
 
 	const stop = () => {
+		console.log(index);
 		setStopTimer(true);
-		dispatch(updateTime([1, seconds]));
+		dispatch(exceriesDone({ index: index, time: { minutes: minutes, hours: hours } }));
 	};
 
 	useEffect(() => {
 		if (stopTimer) return;
-		const time = setInterval(() => counter(), 1000);
+		const time = setInterval(() => counter(), 10);
 		return () => clearInterval(time);
 	}, [seconds, counter, stopTimer]);
 
