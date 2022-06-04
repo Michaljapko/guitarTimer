@@ -5,4 +5,5 @@ export const StyledColumn = styled.div`
 	width: 30px;
 	background: rgb(186, 109, 53);
 	background: linear-gradient(180deg, rgba(186, 109, 53, 1) 0%, rgba(179, 93, 74, 1) 100%);
+	transition: height 1s;
 `;

@@ -9,6 +9,7 @@ const HeadInfo = () => {
 	const isPracticeToday = useSelector(selectIsPracticeToday);
 	return (
 		<StyledHeadInfo>
+		<p></p>
 			<StyledCard>
 				<p>
 					{allTime.horus}:{allTime.minutes}h

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { exceriesDone } from '../../features/skills/skillsSlice';
+import { selectUserAuth } from '../../features/user/usersSlice';
 
 const Timer = ({ index }) => {
 	const [seconds, setSeconds] = useState(0);
@@ -9,6 +10,7 @@ const Timer = ({ index }) => {
 	const [stopTimer, setStopTimer] = useState(false);
 
 	const dispatch = useDispatch();
+	const userAuth = useSelector(selectUserAuth);
 
 	const counter = useCallback(() => {
 		setSeconds((prev) => prev + 1);
@@ -25,7 +27,8 @@ const Timer = ({ index }) => {
 	const stop = () => {
 		console.log(index);
 		setStopTimer(true);
-		dispatch(exceriesDone({ index: index, time: { minutes: minutes, hours: hours } }));
+
+		dispatch(exceriesDone({ index: index, time: { minutes: minutes, hours: hours }, userAuth: userAuth }));
 	};
 
 	useEffect(() => {

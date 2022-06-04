@@ -1,13 +1,12 @@
 import Skill from '../Skill';
 
-
 import { selectSkills } from '../../features/skills/skillsSlice';
-
 import { useSelector } from 'react-redux';
 import { StyledWrapper } from './Wrapper.styled';
 
 const Wrapper = () => {
 	const skills = useSelector(selectSkills);
+
 
 	return (
 		<StyledWrapper>

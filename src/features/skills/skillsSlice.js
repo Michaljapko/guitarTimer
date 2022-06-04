@@ -1,73 +1,32 @@
 import { createSlice, current } from '@reduxjs/toolkit';
-
-const initialState = {
+import { setUserDataSkills } from '../../utils/firebase/firebase.utils';
+export const initialState = {
 	isPractice: false,
 	practiceDate: '1.10.122',
 	skillArr: [
 		{
 			name: 'Improwizacja',
 			time: {
-				hours: 2,
-				minutes: 38,
+				hours: 0,
+				minutes: 0,
 			},
-			takes: 3,
+			takes: 0,
 			longestTake: {
-				hours: 2,
-				minutes: 38,
+				hours: 0,
+				minutes: 0,
 			},
-			lastTake: '20 dni temu',
 		},
 		{
 			name: 'Prawa Ręka',
 			time: {
-				hours: 2,
-				minutes: 38,
+				hours: 0,
+				minutes: 0,
 			},
 			takes: 0,
 			longestTake: {
-				hours: 2,
-				minutes: 38,
-			},
-			lastTake: '20 dni temu',
-		},
-		{
-			name: 'Lewa Ręka',
-			time: {
-				hours: 2,
-				minutes: 38,
-			},
-			takes: 3,
-			longestTake: {
-				hours: 2,
-				minutes: 38,
-			},
-			lastTake: '20 dni temu',
-		},
-		{
-			name: 'Komponowanie',
-			time: {
-				hours: 2,
-				minutes: 40,
-			},
-			takes: 4,
-			longestTake: {
-				hours: 2,
-				minutes: 38,
-			},
-			lastTake: '20 dni temu',
-		},
-		{
-			name: 'Słuch',
-			time: {
 				hours: 0,
 				minutes: 0,
 			},
-			takes: 1,
-			longestTake: {
-				hours: 0,
-				minutes: 0,
-			},
-			lastTake: '20 dni temu',
 		},
 	],
 };
@@ -95,10 +54,16 @@ export const skillsSlice = createSlice({
 			skill.time.minutes = skill.time.minutes + action.payload.time.minutes;
 
 			skill.practiceNow = false;
-			skill.takes++;
 			state.isPractice = false;
-		},
+			skill.takes++;
 
+			setUserDataSkills(action.payload.userAuth, state);
+		},
+		setSkillsData: (state, { payload }) => {
+			state.isPractice = payload.isPractice;
+			state.practiceDate = payload.practiceDate;
+			state.skillArr = payload.skillArr;
+		},
 		setIsPractice: (state, action) => {
 			state.isPractice = true;
 			state.skillArr[action.payload].practiceNow = true;
@@ -106,9 +71,8 @@ export const skillsSlice = createSlice({
 	},
 });
 
-export const { exceriesDone, setIsPractice } = skillsSlice.actions;
-
 export const selectSkills = (state) => state.skills.skillArr;
+export const selectSkill = (state) => state.skills;
 export const selectIsPractice = (state) => state.skills.isPractice;
 
 export const selectAllTime = (state) => {
@@ -144,4 +108,5 @@ export const selectIsPracticeToday = (state) => {
 	return state.skills.practiceDate === data.getDay() + '.' + data.getMonth() + '.' + data.getYear();
 };
 
+export const { exceriesDone, setIsPractice, setSkillsData } = skillsSlice.actions;
 export default skillsSlice.reducer;
