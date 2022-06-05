@@ -1,9 +1,14 @@
 import styled from 'styled-components';
 
+export const StyledPercent = styled.div`
+	color: ${({ theme }) => theme.palleteColor.buttonColor};
+	font-weight: bold;
+`;
+
 export const StyledColumn = styled.div`
-	height: ${({ percent }) => percent}px;
-	width: 30px;
-	background: rgb(186, 109, 53);
-	background: linear-gradient(180deg, rgba(186, 109, 53, 1) 0%, rgba(179, 93, 74, 1) 100%);
-	transition: height 1s;
+	border-radius: 5px;
+	height: ${({ percent }) => 10 + percent}px;
+	width: 5px;
+	background: ${({ theme }) => theme.palleteColor.percentColumn};
+	transition: height 0.2s;
 `;

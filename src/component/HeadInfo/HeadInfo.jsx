@@ -1,30 +1,41 @@
 import { useSelector } from 'react-redux';
+import { StyledHeadInfo, StyledSmallText, StyledCard, StyledWelcome, StyledDone, StyledNotDone } from './HeadInfo.styled';
 import { selectAllTime, selectAllTakes, selectIsPracticeToday } from '../../features/skills/skillsSlice';
-import { AiOutlineLike, AiOutlineDislike } from 'react-icons/ai';
-import { StyledHeadInfo, StyledSmallText, StyledCard } from './HeadInfo.styled';
+import { selectUserName } from '../../features/user/usersSlice';
+import Authentication from '../Authentication';
+import { TEXT } from '../../store/language/pl';
 
 const HeadInfo = () => {
 	const allTime = useSelector(selectAllTime);
 	const allTakes = useSelector(selectAllTakes);
+	const userName = useSelector(selectUserName);
 	const isPracticeToday = useSelector(selectIsPracticeToday);
+
 	return (
-		<StyledHeadInfo>
-		<p></p>
-			<StyledCard>
+		<>
+			<StyledWelcome>
 				<p>
-					{allTime.horus}:{allTime.minutes}h
+					{TEXT.welcome} {userName}
 				</p>
-				<StyledSmallText>Łącznie spędziłeś godzin</StyledSmallText>
-			</StyledCard>
-			<StyledCard>
-				<p>{allTakes}</p>
-				<StyledSmallText>Wszystkich sesji</StyledSmallText>
-			</StyledCard>
-			<StyledCard>
-				{isPracticeToday ? <AiOutlineLike /> : <AiOutlineDislike />}
-				<StyledSmallText>Ćwiczyłeś dziś?</StyledSmallText>
-			</StyledCard>
-		</StyledHeadInfo>
+				<Authentication />
+			</StyledWelcome>
+			<StyledHeadInfo>
+				<StyledCard>
+					<p>
+						{allTime.horus}:{allTime.minutes}h
+					</p>
+					<StyledSmallText>{TEXT.timeTotal}</StyledSmallText>
+				</StyledCard>
+				<StyledCard>
+					<p>{allTakes}</p>
+					<StyledSmallText>{TEXT.allSesion}</StyledSmallText>
+				</StyledCard>
+				<StyledCard>
+					{isPracticeToday ? <StyledDone /> : <StyledNotDone />}
+					<StyledSmallText>{TEXT.exceriesToday}</StyledSmallText>
+				</StyledCard>
+			</StyledHeadInfo>
+		</>
 	);
 };
 

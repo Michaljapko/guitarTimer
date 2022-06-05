@@ -1,12 +1,25 @@
 import PercentColumn from '../PercentColumn';
-import { StyledCard, StyledFooterCard, StyledHours, StyledSkill, StyledTextBold, StyledTittle, StyledWrapper } from './Skill.styled';
+import Button from '../Button';
+import Timer from '../Timer/Timer';
+
+import {
+	StyledCard,
+	StyledFooterCard,
+	StyledHours,
+	StyledSkill,
+	StyledTextBold,
+	StyledTittle,
+	StyledWrapper,
+	StyledButtonWrapper,
+} from './SkillCard.styled';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { selectPercent, setIsPractice, selectIsPractice } from '../../features/skills/skillsSlice';
-import Timer from '../Timer/Timer';
+import { TEXT } from '../../store/language/pl';
 
-const Skill = ({ skill, index }) => {
+const SkillCard = ({ skill, index }) => {
 	const dispatch = useDispatch();
+
 	const percent = useSelector(selectPercent(index));
 	const isPractice = useSelector(selectIsPractice);
 
@@ -15,7 +28,9 @@ const Skill = ({ skill, index }) => {
 			<StyledSkill>
 				<PercentColumn percent={percent} />
 				<StyledTittle> {skill.name}</StyledTittle>
-				<Timer index={index} />
+				<StyledWrapper>
+					<Timer index={index} />
+				</StyledWrapper>
 			</StyledSkill>
 		);
 
@@ -30,33 +45,31 @@ const Skill = ({ skill, index }) => {
 					<StyledHours>
 						{skill.time.hours}:{skill.time.minutes < 10 ? '0' + skill.time.minutes : skill.time.minutes}h
 					</StyledHours>
-					<p>Czas ogółem</p>
+					<p>{TEXT.allTime}</p>
 				</StyledCard>
 				<StyledFooterCard>
 					<p>
-						Ilość sesji:<StyledTextBold> {skill.takes}</StyledTextBold>
+						{TEXT.session}:<StyledTextBold> {skill.takes}</StyledTextBold>
 					</p>
 					<p>
-						Najdłuższa sesja:{' '}
+						{TEXT.longestSession}:
 						<StyledTextBold>
 							{skill.longestTake.hours}:{skill.longestTake.minutes < 10 ? '0' + skill.longestTake.minutes : skill.longestTake.minutes}h
 						</StyledTextBold>
 					</p>
-					<p>
-						Ostatnia sesja:<StyledTextBold> {skill.lastTake}</StyledTextBold>
-					</p>
 				</StyledFooterCard>
-
-				<button
-					onClick={() => {
-						dispatch(setIsPractice(index));
-					}}
-				>
-					Start Practice
-				</button>
+				<StyledButtonWrapper>
+					<Button
+						action={() => {
+							dispatch(setIsPractice(index));
+						}}
+					>
+						{TEXT.start}
+					</Button>
+				</StyledButtonWrapper>
 			</StyledWrapper>
 		</StyledSkill>
 	);
 };
 
-export default Skill;
+export default SkillCard;

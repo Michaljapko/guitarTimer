@@ -1,47 +1,44 @@
-import { useCallback, useEffect, useState } from 'react';
+import useTimer from '../../hooks/useTimer';
 import { useDispatch, useSelector } from 'react-redux';
 import { exceriesDone } from '../../features/skills/skillsSlice';
 import { selectUserAuth } from '../../features/user/usersSlice';
+import { ImPause2, ImPlay3, ImCheckmark } from 'react-icons/im';
+import { StyledTimerButton, StyledTimerWrap } from './Timer.styled';
 
 const Timer = ({ index }) => {
-	const [seconds, setSeconds] = useState(0);
-	const [minutes, setMinutes] = useState(0);
-	const [hours, setHours] = useState(0);
-	const [stopTimer, setStopTimer] = useState(false);
-
+	const { hours, minutes, seconds, stopTimer, setStopTimer } = useTimer();
 	const dispatch = useDispatch();
 	const userAuth = useSelector(selectUserAuth);
 
-	const counter = useCallback(() => {
-		setSeconds((prev) => prev + 1);
-		if (seconds === 59) {
-			setMinutes((prev) => prev + 1);
-			setSeconds(0);
-		}
-		if (minutes === 59) {
-			setHours((prev) => prev + 1);
-			setMinutes(0);
-		}
-	}, [seconds, minutes]);
-
 	const stop = () => {
-		console.log(index);
 		setStopTimer(true);
-
+	};
+	const start = () => {
+		setStopTimer(false);
+	};
+	const done = () => {
+		setStopTimer(true);
 		dispatch(exceriesDone({ index: index, time: { minutes: minutes, hours: hours }, userAuth: userAuth }));
 	};
 
-	useEffect(() => {
-		if (stopTimer) return;
-		const time = setInterval(() => counter(), 10);
-		return () => clearInterval(time);
-	}, [seconds, counter, stopTimer]);
-
 	return (
-		<div>
+		<StyledTimerWrap>
 			{hours} : {minutes < 10 ? '0' + minutes : minutes} : {seconds < 10 ? '0' + seconds : seconds}
-			<button onClick={() => stop()}>Stop</button>
-		</div>
+			<div>
+				{stopTimer ? (
+					<StyledTimerButton onClick={() => start()}>
+						<ImPlay3 />
+					</StyledTimerButton>
+				) : (
+					<StyledTimerButton onClick={() => stop()}>
+						<ImPause2 />
+					</StyledTimerButton>
+				)}
+				<StyledTimerButton onClick={() => done()}>
+					<ImCheckmark />
+				</StyledTimerButton>
+			</div>
+		</StyledTimerWrap>
 	);
 };
 

@@ -1,7 +1,12 @@
-import { StyledColumn } from './PercentColumn.styled';
+import { StyledColumn, StyledPercent } from './PercentColumn.styled';
 
-const Wrapper = ({ percent }) => {
-	return <StyledColumn percent={percent} />;
+const PercentColumn = ({ percent }) => {
+	return (
+		<>
+			<StyledPercent>{Math.floor(percent)}%</StyledPercent>
+			<StyledColumn percent={percent} />
+		</>
+	);
 };
 
-export default Wrapper;
+export default PercentColumn;
